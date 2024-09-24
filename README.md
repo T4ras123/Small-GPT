@@ -73,6 +73,8 @@ class FeedForward(nn.Module):
 
 ### 3. Add & Norm Block
 
+![alt text](Media/image-4.png)
+
 ```python
 class Block(nn.Module):
     def __init__(self, n_embed, n_head):
@@ -90,7 +92,5 @@ class Block(nn.Module):
         x += self.ffwd(self.ln2(x)) # And before MLP
         return x
 ```
-
-![alt text](Media/image-4.png)
 
 - In the original paper Add & Norm layer is applied after Attention or MLP, but I applied it before following the latest practices  
