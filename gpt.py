@@ -166,29 +166,31 @@ class SmallGPT(nn.Module):
             idx = torch.cat((idx, idx_next), dim=1)
         return idx
 
-model = SmallGPT().to(device)
-optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-max_iters = 20000
 
-for iter in range(max_iters):
-    
-    if iter % eval_interval == 0 or iter == max_iters - 1:
-        losses = estimate_loss()
-        print(f"step {iter}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
-    
-    xb, yb = get_batch('train')
+if __name__=='__main__':
+    model = SmallGPT().to(device)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+    max_iters = 20000
 
-    xb, yb = xb.to(device), yb.to(device)
+    for iter in range(max_iters):
+        
+        if iter % eval_interval == 0 or iter == max_iters - 1:
+            losses = estimate_loss()
+            print(f"step {iter}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
+        
+        xb, yb = get_batch('train')
 
-    logits, loss = model(xb, yb)
-    optimizer.zero_grad(set_to_none=True)
-    loss.backward()
-    optimizer.step()
-    
-context = torch.zeros((1, 1), dtype=torch.long, device=device)
-print(decode(model.generate(context, max_new_tokens=700)[0].tolist()))
+        xb, yb = xb.to(device), yb.to(device)
 
-model_path = "model.pth"
-torch.save(model.state_dict(), model_path)
+        logits, loss = model(xb, yb)
+        optimizer.zero_grad(set_to_none=True)
+        loss.backward()
+        optimizer.step()
+        
+    context = torch.zeros((1, 1), dtype=torch.long, device=device)
+    print(decode(model.generate(context, max_new_tokens=700)[0].tolist()))
 
-print(f"Model saved at {model_path}")
+    model_path = "model.pth"
+    torch.save(model.state_dict(), model_path)
+
+    print(f"Model saved at {model_path}")
