@@ -15,4 +15,5 @@ m.eval()
 
 
 context = torch.zeros((1, 1), dtype=torch.long)
-print(decode(m.generate(context, max_new_tokens=700)[0].tolist()))
+max_new_tokens=700
+print(decode(m.generate(context, max_new_tokens)[0].tolist()))
