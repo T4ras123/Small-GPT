@@ -5,38 +5,39 @@ Reproduced a transformer architecture with some modifications following [Vaswani
 
 ## Training reslts 
 
-- #### Validation loss - 1.5
+- #### Validation loss - 1.5057
+```
+step 0: train loss 4.5147, val loss 4.5159
+step 500: train loss 2.0514, val loss 2.1060
+...
+step 9999: train loss 1.1971, val loss 1.5057
+```
 - #### Example text:
 ```
-He cannot have him as kind; we all Edward,
-But I will any moe to a husband
-In here, making instruments on their harm;
-And therefore it off; for 'tis but by cold,
-He is engrace, and designs, as the sea
-As doth finger grave in Sicilia childishment;
-It shall be so, to retire thee day,
-For if exy were seen the proof, with a mind,
-As I have ever shall be regal as one.
+See how to give me as the moiety company,
+Satisfied, land make some lips domn thee,
+And made up in question wining the skilf!
+Than his of this horses of clock, sorrent up,
+Then thou and call'd three bloody her intents.
 
-ESCALUS:
-Say you shall I be the
-common secucord and by the like a figure?
-Farewell exhale ashame.
+CAMILLO:
+I change it most phins' like entrance;
+He shall be show'd in earth a subjects of this!
+Thou hear hand, that restion of royal
+To see his choice make a breast.
 
-ESCALUS:
-I am, we say!
+ISABELLA:
+No, soldier, of our cousin,
+Cullioner! he's not satisfied, as it strike a piter's,
+So late a grief choice.
 
-Justice:
-It beseech you? weary true.
+ISABELLA:
+O, hear present duty of mine eyes are there;
+But, one do where well as happire it up.
 
-CANUS:
-He says within the tribunes? Our order means
-Fled to make duty?
-
-FROTH:
-Marry, that who comes highness chances to bay;
-Unless his force and that encompass he
-Of vict
+CLAUDIO:
+Lord Clifford, I will open him from condition,
+A dull show of such fearful eather:
 ```
 
 ## My model

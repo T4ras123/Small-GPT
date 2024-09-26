@@ -17,6 +17,8 @@ block_size = 256
 eval_iters = 200
 eval_interval = 500
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+max_iters = 10000
+
 
 #-----------------------------------------------------------
 
@@ -168,9 +170,9 @@ class SmallGPT(nn.Module):
 
 
 if __name__=='__main__':
+    
     model = SmallGPT().to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-    max_iters = 20000
 
     for iter in range(max_iters):
         
