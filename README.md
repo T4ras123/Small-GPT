@@ -2,7 +2,42 @@
 
 Reproduced a transformer architecture with some modifications following [Vaswani et al. 2017](https://arxiv.org/pdf/1706.03762)
 
-P.S Model is not yet trained, as it takes 38 hours without a GPU. Maybe soon though.
+
+## Training reslts 
+
+- #### Validation loss - 1.5
+- #### Example text:
+```
+He cannot have him as kind; we all Edward,
+But I will any moe to a husband
+In here, making instruments on their harm;
+And therefore it off; for 'tis but by cold,
+He is engrace, and designs, as the sea
+As doth finger grave in Sicilia childishment;
+It shall be so, to retire thee day,
+For if exy were seen the proof, with a mind,
+As I have ever shall be regal as one.
+
+ESCALUS:
+Say you shall I be the
+common secucord and by the like a figure?
+Farewell exhale ashame.
+
+ESCALUS:
+I am, we say!
+
+Justice:
+It beseech you? weary true.
+
+CANUS:
+He says within the tribunes? Our order means
+Fled to make duty?
+
+FROTH:
+Marry, that who comes highness chances to bay;
+Unless his force and that encompass he
+Of vict
+```
 
 ## My model
 
