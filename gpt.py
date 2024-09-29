@@ -133,10 +133,7 @@ class SmallGPT(nn.Module):
         self.token_embedding_table = nn.Embedding(vocab_size, n_embed)
         self.l_head = nn.Linear(n_embed, vocab_size)
         self.position_embedding_table = nn.Embedding(block_size, n_embed)
-        self.blocks = nn.Sequential(
-            Block(n_embed, n_head),
-            Block(n_embed, n_head)
-        )
+        self.blocks = nn.Sequential(*[Block(n_embed, n_head=n_head) for _ in range(n_layers)])
         
     def forward(self, idx, targets=None):
         B, T = idx.shape
