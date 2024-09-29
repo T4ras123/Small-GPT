@@ -2,7 +2,43 @@
 
 Reproduced a transformer architecture with some modifications following [Vaswani et al. 2017](https://arxiv.org/pdf/1706.03762)
 
-P.S Model is not yet trained, as it takes 38 hours without a GPU. Maybe soon though.
+
+## Training reslts 
+
+- #### Validation loss - 1.5057
+```
+step 0: train loss 4.5147, val loss 4.5159
+step 500: train loss 2.0514, val loss 2.1060
+...
+step 9999: train loss 1.1971, val loss 1.5057
+```
+- #### Example text:
+```
+See how to give me as the moiety company,
+Satisfied, land make some lips domn thee,
+And made up in question wining the skilf!
+Than his of this horses of clock, sorrent up,
+Then thou and call'd three bloody her intents.
+
+CAMILLO:
+I change it most phins' like entrance;
+He shall be show'd in earth a subjects of this!
+Thou hear hand, that restion of royal
+To see his choice make a breast.
+
+ISABELLA:
+No, soldier, of our cousin,
+Cullioner! he's not satisfied, as it strike a piter's,
+So late a grief choice.
+
+ISABELLA:
+O, hear present duty of mine eyes are there;
+But, one do where well as happire it up.
+
+CLAUDIO:
+Lord Clifford, I will open him from condition,
+A dull show of such fearful eather:
+```
 
 ## My model
 
