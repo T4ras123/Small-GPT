@@ -58,7 +58,7 @@ def estimate_loss():
         losses = torch.zeros(eval_iters)
         for k in range(eval_iters):
             X, Y = get_batch(split)
-            logits, loss = model(X, Y)
+            _, loss = model(X, Y)
             losses[k] = loss.item()
         out[split] = losses.mean()
     model.train()
@@ -76,7 +76,7 @@ class Head(nn.Module):
         self.dropout = nn.Dropout(dropout)
         
     def forward(self, x):
-        B, T, C = x.shape
+        _, T, _ = x.shape
         k = self.key(x)
         q = self.query(x)
         
@@ -167,7 +167,7 @@ class SmallGPT(nn.Module):
     def generate(self, idx, max_new_tokens):
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -block_size:]
-            logits, loss = self(idx_cond)
+            logits, _ = self(idx_cond)
             logits = logits[:, -1, :]
             probs = F.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)
