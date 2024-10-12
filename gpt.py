@@ -1,6 +1,7 @@
 import torch 
 import torch.nn as nn 
 from torch.nn import functional as F
+from tokenizer import GPT4Tokenizer
 torch.autograd.set_detect_anomaly(True)
 torch.manual_seed(163173)
 print(torch.cuda.is_available())
@@ -18,22 +19,21 @@ eval_iters = 200
 eval_interval = 500
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 max_iters = 10000
+vocab_size = 600
 
 
 #-----------------------------------------------------------
 
+
+
 with open("input.txt", 'r', encoding='utf-8') as f:
     text = f.read()
-    
-chars = sorted(list(set(text)))
-vocab_size = len(chars)
 
-itos = {i: char for i, char in enumerate(chars)}
-stoi = {char: i for i, char in enumerate(chars)}
-encode = lambda x: [stoi[char] for char in list(x)]
-decode = lambda x: ''.join([itos[num] for num in list(x)])
+t = GPT4Tokenizer()
+t.train(text, vocab_size)
 
-data = torch.tensor(encode(text), dtype=torch.long).to(device)
+
+data = torch.tensor(t.encode(text), dtype=torch.long).to(device)
 
 n = int(0.9 * len(data))
 train_data = data[:n]
@@ -196,7 +196,7 @@ if __name__=='__main__':
         optimizer.step()
         
     context = torch.zeros((1, 1), dtype=torch.long, device=device)
-    print(decode(model.generate(context, max_new_tokens=700)[0].tolist()))
+    print(t.decode(model.generate(context, max_new_tokens=700)[0].tolist()))
 
     model_path = "model.pth"
     torch.save(model.state_dict(), model_path)
