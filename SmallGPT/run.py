@@ -1,5 +1,6 @@
 import torch
-from gpt import SmallGPT, decode # Import the model from model.py
+from gpt import SmallGPT # Import the model from model.py
+from tokenizer import GPT4Tokenizer
 
 m = SmallGPT()
 
