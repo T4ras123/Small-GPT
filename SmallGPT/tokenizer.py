@@ -1,5 +1,5 @@
 import regex as re
-
+import argparse 
 
 class GPT4Tokenizer():
     def __init__(self):
@@ -68,3 +68,8 @@ class GPT4Tokenizer():
                 newids.append(ids[id])
                 id+=1
         return newids
+
+
+if __name__=='__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument()
