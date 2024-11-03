@@ -2,46 +2,37 @@ import regex as re
 import argparse 
 import json
 
+
 class GPT4Tokenizer():
-    def __init__(self):
+    def __init__(self, path='vocab.json', pattern=None):
         self.vocab = {idx : bytes([idx]) for idx in range(256)}
         self.merges = dict()
- 
-    
-    def load_vocab(self, path='vocab.json'):
-        with open(path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        # Load vocab
-        self.vocab = {}
-        for idx_str, value in data['vocab'].items():
-            idx = idx_str
-            self.vocab[idx] = value.encode('utf-8')
-        # Load merges
-        self.merges = {}
-        for pair_str, idx in data['merges'].items():
-            first_str, second_str = pair_str.split(',')
-            first, second = int(first_str), int(second_str)
-            self.merges[(first, second)] = idx
-          
-                
+        self.pattern = pattern if pattern else r"\p{L}+|\p{Z}+|\p{N}+|[\p{P}&&[^.]]"
+        self.splitby = re.compile(self.pattern)
+        self.path = path
+
+
     def train(self, text, vocab_size):
 
         assert vocab_size >= 256
 
         num_merges = vocab_size - 256
 
-        text_splitted = text
+        text_splitted = re.findall(self.splitby, text)
 
-        ids = list(text_splitted.encode("utf-8"))
+        ids = [list(ch.encode("utf-8")) for ch in text_splitted]
 
         for i in range(num_merges):
-            stats = self.get_pairs(ids) 
+            stats = {}
+            for _ in ids:
+                self.get_pairs(_, stats)
             pair = max(stats, key=stats.get)
             idx = 256 + i
-            ids = self.merge(ids, pair, idx)
+            ids = [self.merge(chunk_ids, pair, idx) for chunk_ids in ids]
             self.merges[pair] = idx
             self.vocab[idx] = self.vocab[pair[0]] + self.vocab[pair[1]]
-        self.save_vocab_and_merges()
+        self.save_vocab_and_merges(self.path)
+
 
     
     def encode(self, text):
@@ -60,7 +51,13 @@ class GPT4Tokenizer():
             ids = self.merge(ids, pair, self.merges[pair])
 
         return ids
-            
+    
+    
+    def decode(self, ids):
+        tokens = b"".join(self.vocab[idx] for idx in ids)
+        text = tokens.decode("utf-8", errors="replace")
+        return text
+
 
     def get_pairs(self, ids, counts=None):
 
@@ -69,10 +66,9 @@ class GPT4Tokenizer():
             counts[pair] = counts.get(pair, 0) + 1
 
         return counts
-    
 
-      
-    def save_vocab_and_merges(self, path='./src/vocab.json'):
+
+    def save_vocab_and_merges(self, path):
         data = {
             'vocab': {},
             'merges': {}
@@ -89,8 +85,24 @@ class GPT4Tokenizer():
             data['merges'][key] = idx
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2)
-
-
+            
+            
+    def load_vocab(self, path='vocab.json'):
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        # Load vocab
+        self.vocab = {}
+        for idx_str, value in data['vocab'].items():
+            idx = idx_str
+            self.vocab[idx] = value.encode('utf-8')
+        # Load merges
+        self.merges = {}
+        for pair_str, idx in data['merges'].items():
+            first_str, second_str = pair_str.split(',')
+            first, second = int(first_str), int(second_str)
+            self.merges[(first, second)] = idx
+    
+    
     def merge(self, ids, pair, idx):
         id = 0
         newids = []
@@ -106,12 +118,14 @@ class GPT4Tokenizer():
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--text', type=str, help='Text to train tokenizer on')
-    parser.add_argument('--vocab_size', type=int, help='Vocab size for tokenizer')
+    parser.add_argument('-t', '--text', type=str, help='Text to train tokenizer on')
+    parser.add_argument('-v','--vocab_size', type=int, help='Vocab size for tokenizer')
+    parser.add_argument('-o', '--output', default='vocab.json', type=str, help='Output path for vocab and merges')
+    parser.add_argument('-p', '--pattern', type=str, help='Regex pattern to split text')
     args = parser.parse_args()
     
     with open(args.text, 'r') as f:
         args.text = f.read()
     
-    tokenizer = GPT4Tokenizer()
+    tokenizer = GPT4Tokenizer(args.output, args.pattern)
     tokenizer.train(args.text, args.vocab_size)
