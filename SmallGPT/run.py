@@ -11,8 +11,11 @@ m.load_state_dict(torch.load(model_path))
 
 m.eval()
 
+tokenizer = GPT4Tokenizer()
+tokenizer.load_vocab('vocab.json')
+
 
 context = torch.zeros((1, 1), dtype=torch.long)
 
 max_new_tokens=700
-print(decode(m.generate(context, max_new_tokens)[0].tolist()))
+print(tokenizer.decode(m.generate(context, max_new_tokens)[0].tolist()))
